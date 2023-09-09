@@ -1,0 +1,114 @@
+<html><head><meta charset="utf-8"><script src="CatCore/core.js"></script><script>__._systemType="brython";</script><script type="text/python">from catcore import __
+__.loadFinished()
+desktop = __.Window.new({
+  "id": "dsk",
+  "size": "full",
+  "desktop": True
+})
+guide = __.Window.new({
+  "id": "intro",
+  "title": "Добро пожаловать в Snowflake!",
+  "closable": True
+})
+backdrop = __.Image().file("flake.png").width("100%").height("100%")
+applicationsbutton = __.Button().label("Приложения").radius(10).color("white").x(10)
+date = __.Date.new()
+time = date.toLocaleTimeString("ru")
+timetext =  __.Text().content(time).x("50%")
+__.Process.new("unsafe_interval", lambda: timetext.content(__.Date.new().toLocaleTimeString("ru")))
+deskui = __.UI.new(desktop, backdrop, applicationsbutton, timetext)
+desktop.open()
+
+guide.open()
+
+</script><style>.bootscreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    background-color: #010001;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    cursor: none
+}
+
+#loader {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: grid;
+    text-align: center;
+    align-items: center;
+    justify-content: center
+}
+
+.imageCont {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: auto;
+    height: auto
+}
+
+.imageCont img[data-free=false] {
+    max-width: 100%;
+    max-height: 100%
+}
+
+.progressRing circle {
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    transition: all .2s ease-in-out 0s;
+    -webkit-animation: 2s linear 0s infinite normal none running spin-infinite;
+    animation: 2s linear 0s infinite normal none running spin-infinite
+}
+
+@-webkit-keyframes spin-infinite {
+    0% {
+        stroke-dasharray: .01px,43.97px;
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0)
+    }
+
+    50% {
+        stroke-dasharray: 21.99px,21.99px;
+        -webkit-transform: rotate(450deg);
+        transform: rotate(450deg)
+    }
+
+    to {
+        stroke-dasharray: .01px,43.97px;
+        -webkit-transform: rotate(1080deg);
+        transform: rotate(1080deg)
+    }
+}
+
+@keyframes spin-infinite {
+    0% {
+        stroke-dasharray: .01px,43.97px;
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0)
+    }
+
+    50% {
+        stroke-dasharray: 21.99px,21.99px;
+        -webkit-transform: rotate(450deg);
+        transform: rotate(450deg)
+    }
+
+    to {
+        stroke-dasharray: .01px,43.97px;
+        -webkit-transform: rotate(1080deg);
+        transform: rotate(1080deg)
+    }
+}
+
+.mt-48 {
+    margin-top: 12rem
+}</style></head><body><div class="bootscreen"><div class=""><div class="imageCont prtclk " data-back="false"><img width="180px" height="180px" data-free="false" src="load.png" onerror="this.style.visibility='hidden';"></div><div class="mt-48" id="loader"><svg class="progressRing" height="48" width="48" viewBox="0 0 16 16"><circle cx="8px" cy="8px" r="7px"></circle></svg></div></div></div></body></html>
