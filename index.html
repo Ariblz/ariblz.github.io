@@ -1,27 +1,105 @@
 <html><head><meta charset="utf-8"><script src="CatCore/core.js"></script><script>__._systemType="brython";</script><script type="text/python">from catcore import __
 __.loadFinished()
-desktop = __.Window.new({
+desktop = __.Window.new({ # Интерфейс рабочего стола
   "id": "dsk",
   "size": "full",
   "desktop": True
 })
-guide = __.Window.new({
+guide = __.Window.new({ # Руководство по системе
   "id": "intro",
   "title": "Добро пожаловать в Snowflake!",
   "closable": True
 })
-backdrop = __.Image().file("flake.png").width("100%").height("100%")
-applicationsbutton = __.Button().label("Приложения").radius(10).color("white").x(10)
-date = __.Date.new()
-time = date.toLocaleTimeString("ru")
-timetext =  __.Text().content(time).x("50%")
-__.Process.new("unsafe_interval", lambda: timetext.content(__.Date.new().toLocaleTimeString("ru")))
-deskui = __.UI.new(desktop, backdrop, applicationsbutton, timetext)
-desktop.open()
+applications = __.Window.new({ # Меню ярлыков
+   "id": "appmenu",
+   "title": "Приложения",
+   "closable": True,
+   "desktop": True,
+   "size": "full",
+   "layer": 2
+})
+# Интерфейс ОС
+# Начало
+backdrop = __.Image().file("flake.png").width("100%").height("100%") # Задний фон
+###################   Функции для открытия/закрытия меню   #############################
+def menu_up(e): # Открытие меню
+   applications.open()
+def menu_drop(e): # Закрытие меню
+   applications.close()
+###################                Конец                   #############################
 
-guide.open()
+##
 
-</script><style>.bootscreen {
+## Меню ##
+# YouTube
+
+def youtube_open(e):
+  youtube = __.Window.new({
+    "id": "youtube",
+    "title": "YouTube",
+    "closable": True,
+  })
+  yt_browser = __.Browser().link("https://youtube.com").width(500).height(500)
+  yt_ui = __.UI.new(youtube, yt_browser)
+  menu_drop("a")
+  youtube.open()
+youtube = __.Image().file("youtube.png").width("10%").height("20%").on("click", youtube_open)
+# Wikipedia
+def wiki_open(e):
+  wiki = __.Window.new({
+    "id": "wiki",
+    "title": "Wikipedia",
+    "closable": True,
+    })
+  wiki_browser = __.Browser().link("https://ru.wikipedia.org/wiki/").width(500).height(500)
+  wiki_ui = __.UI.new(wiki, wiki_browser)
+  menu_drop("a")
+  wiki.open()
+wiki = __.Image().file("wiki.png").width("10%").height("20%").on("click", wiki_open).x(250)
+
+# Python
+def py_open(e):
+  python = __.Window.new({
+    "id": "pyide",
+    "title": "Python IDE",
+    "closable": True,
+    })
+  py_browser = __.Browser().link("https://www.programiz.com/python-programming/online-compiler/").width(500).height(500)
+  py_ui = __.UI.new(python, py_browser)
+  menu_drop("a")
+  python.open()
+python = __.Image().file("python.png").width("10%").height("20%").on("click", py_open).x(500)
+
+############# 
+app_ui = __.UI.new(applications, wiki, youtube, python)
+#############
+
+
+## Конец ##
+applicationsbutton = __.Button().label("Приложения").radius(10).color("white").x(10).on("click", menu_up) # Кнопка "приложения"
+
+timetext =  __.Text().x("50%")
+
+__.Process.new("unsafe_interval", lambda: timetext.content(__.Date.new().toLocaleTimeString("ru"))) # Обновление даты
+
+deskui = __.UI.new(desktop, backdrop, applicationsbutton, timetext) # Присваиваем интерфейс к рабочему столу
+
+desktop.open() # Конец настройки рабочего стола, открываем окно
+
+# Тут будет интерфейс руководства
+guidetext = __.Text().content("Добро пожаловать в Snowflake! Это ОС с открытым исходным кодом. <br> На рабочем столе нет ярлыков. <br> Для открытия приложений нажми на кнопку 'Приложения'. <br> Надеюсь тебе понравится система!").y("50%").x(5)
+guideflake = __.Image().file("guidesnowflake.png").x(135).y(10).width("50%").height("50%")
+def change_guide_text1(e):
+    guidetext.content("Большинство программ в Snowflake зависят от Интернета. <br> Благодаря этому у Snowflake есть множество программ - от YouTube до браузерных игр и IDE. <br> Так как исходный код Snowflake открыт, вы можете добавлять свои программы.")
+    guidenext.label("Закрыть")
+    def selfclose(e):
+      guide.close()
+    guidenext.on("click", selfclose)
+
+guidenext = __.Button().radius(10).label("Далее").x("40%").y("85%").on("click", change_guide_text1)
+guideui = __.UI.new(guide, guidetext, guideflake, guidenext)
+# Конец
+guide.open() # Открываем руководство по системе</script><style>.bootscreen {
     position: absolute;
     top: 0;
     left: 0;
